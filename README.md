@@ -6,10 +6,14 @@ It is still in early development, takes no options and is hard-coded to connect 
 
 It was written to automate mirroring of the Android Source Project in gerrit
 
-*It requests lists of projects from a repo mirror project and a gerrit installation
-*Those lists are compared, and any new projects from repo are created it gerrit
-*The gerrit git remote is added to any new projects
-*Each repo project is pushed to gerrit
+* It requests lists of projects from a repo mirror project and a gerrit installation
+* Those lists are compared, and any new projects from repo are created it gerrit
+* The gerrit git remote is added to any new projects
+* Each repo project is pushed to gerrit
+
+##Cool stuff
+* Handles differences in namespaces between repo and repo
+** This is useful when putting upstream mirrors in a sub-project in gerrit
 
 ##Requirements:
 * repo initiated with the --mirror (i.e. bare git projects) option

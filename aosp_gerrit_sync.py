@@ -21,7 +21,8 @@
 import os, sys, paramiko, socket, traceback, subprocess
 from time import sleep
 
-#use repo/ssh to push to sync up aosp into gerrit
+#Config stuff
+#TODO: move to a config file
 
 aosp_branch_local_namespace="aosp"
 aosp_tag_local_namespace="aosp"
@@ -35,6 +36,8 @@ gerrit_ssh_key="/home/gerrit2/.ssh/id_rsa.pub"
 gerrit_ssh_key_pw=""
 gerrit_git_remote_name="gerrit_aosp"
 
+#if enabled, all gerrit urls in each git will be rewritten
+#useful if, say, we're logging in under a new user in gerrit
 update_all_urls=False
 
 def main(argv=None):
