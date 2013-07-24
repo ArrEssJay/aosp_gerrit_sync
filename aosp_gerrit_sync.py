@@ -53,30 +53,17 @@ def main(argv=None):
     #get gerrit project list
     gp = gerrit_get_projects(t)
 
-    print "gerrit projects:"
-    #for project in gp:
-    #    print "### " + project
-
     rp = repo_projects()
     
-    #prepend projects with local namespace
-    #for index, project in enumerate(rp):
-    #    rp[index]=(aosp_branch_local_namespace+"/"+project[0],project[1])
-
     #get list of project names (prepended with namespace) from repo tuples
     rpn = [aosp_branch_local_namespace+"/"+project[0] for project in rp]
-    #rpn = zip(*rp)
-
-    #print "repo projects:"
-    #for project in rpn:
-    #    print "### " + project
 
     #check for duplicates - die if this is true
     if len(rpn) != len(set(rpn)):
         print "Duplicate projects from repo!"
         return 1
 
-    #find projects not in gerrit
+    #find new projects (i.e. those in repo but not in gerrit)
     np = list(set(rpn) - set(gp))
     print "****Found "+str(len(np))+" new projects"
 
@@ -85,7 +72,9 @@ def main(argv=None):
         print "Adding new project to gerrit: "+project
         gerrit_create_project(t, project)
 
-    #does each git have gerrit remote?
+    #Ensure each repo project has a valid gerrit remote
+    #TODO At present the URL isn't checked for validity
+    #We either replace it or assume its ok
     if update_all_urls:
         url_update_list = rp
     else:
@@ -114,10 +103,11 @@ def main(argv=None):
             print "new URL: " + repo_url
             r = repo_forall(project[0], 'git', ['remote', 'add', gerrit_git_remote_name, repo_url])
 
-    #push repo to gerrit
+    #push each repo project to gerrit
     #set the namespace'd branch mapping
     #branchmap = 'refs/*:refs/' + aosp_branch_local_namespace + "/*"
     #branchmap = ''
+    #TODO Implement this option more thoroughly
     for project in rp:
         print "Pushing repo to gerrit for: " + project[0]
         #print "branch mapping: " + branchmap
@@ -234,11 +224,14 @@ def execute_ssh_cmd(transport,cmd):
         print "-->Executing SSH Command: "+str(cmd)
         chan.exec_command(cmd)
 
+        #TODO - Tidy this up and work out
+        #why there is no stderr or stdio response
+        #from the create-project command
         #while chan.recv_ready() == False:
         #    sleep(0.05)
         #    print "Waiting for data..."
+        #TODO - Put a realistic value here
         r = chan.recv(100000)
-        #print "return " + r
         print "close channel"
         chan.close()
         return r
@@ -276,6 +269,7 @@ def manual_auth(transport, username, hostname):
     if auth == 'r':
         default_path = os.path.join(os.environ['HOME'], '.ssh', 'id_rsa')
         #path = raw_input('RSA key [%s]: ' % default_path)
+        #TODO Clean up this demo code and remove this interactive code
         path = default_path
         #if len(path) == 0:
         #    path = default_path
