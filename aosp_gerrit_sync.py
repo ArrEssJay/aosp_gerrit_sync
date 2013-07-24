@@ -71,9 +71,10 @@ def main(argv=None):
     #for project in rpn:
     #    print "### " + project
 
-    #check for duplicates
+    #check for duplicates - die if this is true
     if len(rpn) != len(set(rpn)):
         print "Duplicate projects from repo!"
+        return 1
 
     #find projects not in gerrit
     np = list(set(rpn) - set(gp))
