@@ -44,6 +44,10 @@ def main(argv=None):
     if argv is None:
         argv = sys.argv
 
+    #Move to the correct folder for repo to operate in
+    os.chdir(repo_mirror_base)
+
+    #Open SSH Transport
     t = open_ssh_session()
 
     #get gerrit project list
