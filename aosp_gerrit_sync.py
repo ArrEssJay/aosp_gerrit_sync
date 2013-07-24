@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #Copyright 2013 Robert Jones
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,6 @@
 #Includes code from Parakimo SSH Python library
 #Parakimo is licensed under the LGPL. See LICENSE_GPL and LICENSE_LGPL
 
-#!/usr/bin/python
 
 import os, sys, paramiko, socket, traceback, subprocess
 from time import sleep
