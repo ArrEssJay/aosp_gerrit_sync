@@ -79,29 +79,29 @@ def main(argv=None):
         url_update_list = rp
     else:
         url_update_list = np
-        print "Checking All Projects for gerrit remote"
-        for project in url_update_list:
-            #use repo forall with project name filter for relevant project
-            r = repo_forall(project[0], 'git', ['remote'])
-            remotes = r.splitlines()
-            if gerrit_git_remote_name in remotes:
-                print "Removing old gerrit remote for " +project[0]
-                r = repo_forall(project[0], 'git', ['remote','rm',gerrit_git_remote_name])
+    print "Checking All Projects for gerrit remote"
+    for project in url_update_list:
+        #use repo forall with project name filter for relevant project
+        r = repo_forall(project[0], 'git', ['remote'])
+        remotes = r.splitlines()
+        if gerrit_git_remote_name in remotes:
+            print "Removing old gerrit remote for " +project[0]
+            r = repo_forall(project[0], 'git', ['remote','rm',gerrit_git_remote_name])
 
-            #TODO - only replace the remote if it isn't correct configured
-            print "Adding remote for " + project[0]
-            repo_url = ("ssh://"
-                        +gerrit_ssh_user
-                        +"@"
-                        +gerrit_ssh_host
-                        +":"
-                        +str(gerrit_ssh_port)
-                        +"/"
-                        +aosp_branch_local_namespace
-                        +"/"
-                        +project[0])
-            print "new URL: " + repo_url
-            r = repo_forall(project[0], 'git', ['remote', 'add', gerrit_git_remote_name, repo_url])
+        #TODO - only replace the remote if it isn't correct configured
+        print "Adding remote for " + project[0]
+        repo_url = ("ssh://"
+                    +gerrit_ssh_user
+                    +"@"
+                    +gerrit_ssh_host
+                    +":"
+                    +str(gerrit_ssh_port)
+                    +"/"
+                    +aosp_branch_local_namespace
+                    +"/"
+                    +project[0])
+        print "new URL: " + repo_url
+        r = repo_forall(project[0], 'git', ['remote', 'add', gerrit_git_remote_name, repo_url])
 
     #push each repo project to gerrit
     #set the namespace'd branch mapping
